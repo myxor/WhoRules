@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_random"
+            android:icon="@drawable/ic_menu_random"
+            android:title="@string/designate" />
+
+        <item
+            android:id="@+id/nav_people"
+            android:icon="@drawable/ic_people"
+            android:title="@string/pref_header_people" />
+
+        <item
+            android:id="@+id/nav_ranks"
+            android:icon="@android:drawable/btn_star_big_on"
+            android:title="@string/ranks" />
+
+        <item
+            android:id="@+id/nav_timer"
+            android:icon="@drawable/ic_menu_timer"
+            android:title="@string/timer" />
+
+
+        <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/configure"
+            android:visible="false" />
+
+
+    </group>
+
+
+</menu>

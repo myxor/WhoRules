@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="ranks">
+        <item>König</item>
+        <item>Kaiser</item>
+        <item>Imperator</item>
+        <item>Pharao</item>
+        <item>Halbgott?</item> <!-- TODO -->
+        <item>Gott</item> <!-- TODO -->
+    </string-array>
+</resources>
