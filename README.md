@@ -49,3 +49,9 @@ The following features are implemented:
 * Automatic transport
 * Notification on carriage
 * Drink timer
+
+
+# Note
+
+This project was born out of pure fun and should be considered as such.
+Nevertheless, I would be happy if anyone considers this fun oder even useful in any way. 
