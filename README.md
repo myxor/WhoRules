@@ -6,7 +6,7 @@ I would like to briefly describe this concept:
 
 ## The concept
 
-__First, one is king - exactly one.__
+__First of all: one is always king - exactly one.__
 
 King? Why is one the king?
 
@@ -21,7 +21,7 @@ Everyone else in the group must submit to the king and always address him with t
 
 When the two hours of regency are over, the next regent is determined by random.
 
-## Is one always king?
+## Is one really always king?
 
 Not really.
 
