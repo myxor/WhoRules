@@ -55,3 +55,6 @@ The following features are implemented:
 
 This project was born out of pure fun and should be considered as such.
 Nevertheless, I would be happy if anyone considers this fun oder even useful in any way. 
+
+Please also note that still a lot of strings are hardcoded in german language in the code. 
+I hope that i can someday move these to translation files.
