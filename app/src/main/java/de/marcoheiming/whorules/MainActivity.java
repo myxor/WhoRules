@@ -63,26 +63,36 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 fab.setEnabled(false);
-                new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("Wählen")
-                        .setMessage("Willst du wirklich einen neuen Regent wählen?")
-                        .setIcon(android.R.drawable.ic_media_next)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                Ruler newRuler = chooseNextRandomRuler();
-                                showCurrentRuler(newRuler);
-                                fab.setEnabled(true);
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                fab.setEnabled(true);
-                            }
-                        }).show();
+
+                if (vasallList.isEmpty())
+                {
+                    Toast toast = Toast.makeText(MainActivity.this, "Sie müssen erst Vasallen anlegen!", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                else
+                {
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("Wählen")
+                            .setMessage("Willst du wirklich einen neuen Regent wählen?")
+                            .setIcon(android.R.drawable.ic_media_next)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    Ruler newRuler = chooseNextRandomRuler();
+                                    showCurrentRuler(newRuler);
+                                    fab.setEnabled(true);
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    fab.setEnabled(true);
+                                }
+                            }).show();
+                }
 
                 fab.setEnabled(true);
             }
         });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
