@@ -6,7 +6,11 @@ I would like to briefly describe this concept:
 
 ## The concept
 
+<<<<<<< HEAD
 __First, one is king - exactly one.__
+=======
+__First of all: one is always king - exactly one.__
+>>>>>>> d1657ada412f698889d6e12a5d60d2569db6fac2
 
 King? Why is one the king?
 
@@ -21,7 +25,11 @@ Everyone else in the group must submit to the king and always address him with t
 
 When the two hours of regency are over, the next regent is determined by random.
 
+<<<<<<< HEAD
 ## Is one always king?
+=======
+## Is one really always king?
+>>>>>>> d1657ada412f698889d6e12a5d60d2569db6fac2
 
 Not really.
 
@@ -49,3 +57,15 @@ The following features are implemented:
 * Automatic transport
 * Notification on carriage
 * Drink timer
+<<<<<<< HEAD
+=======
+
+
+# Note
+
+This project was born out of pure fun and should be considered as such.
+Nevertheless, I would be happy if anyone considers this fun oder even useful in any way. 
+
+Please also note that still a lot of strings are hardcoded in german language in the code. 
+I hope that i can someday move these to translation files.
+>>>>>>> d1657ada412f698889d6e12a5d60d2569db6fac2
