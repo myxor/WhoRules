@@ -21,7 +21,7 @@ Everyone else in the group must submit to the king and always address him with t
 
 When the two hours of regency are over, the next regent is determined by random.
 
-## Is one really always king?
+## Is one always king?
 
 Not really.
 
