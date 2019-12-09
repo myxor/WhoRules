@@ -191,6 +191,11 @@ public class MainActivity extends AppCompatActivity
 
     public Ruler chooseNextRandomRuler() {
 
+        if (vasallList.isEmpty())
+        {
+            return null;
+        }
+
         // copy list of vasalls and remove current ruler
         List<Vasall> localVasallList = new ArrayList<>();
         for (Vasall v : vasallList) {
