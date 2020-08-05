@@ -24,17 +24,17 @@
             android:label="@string/title_activity_settings" />
         <activity
             android:name=".AboutActivity"
-            android:label="@string/title_activity_about"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_about" />
         <activity
             android:name=".VasallsListActivity"
-            android:label="@string/title_vasalls_list"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_vasalls_list"/>
         <activity
             android:name=".TimerActivity"
-            android:label="@string/title_timer"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".RanksListActivity" />
+            android:label="@string/title_timer" />
+        <activity
+            android:name=".RanksListActivity"
+            android:label="@string/title_ranks"/>
+
     </application>
 
 </manifest>

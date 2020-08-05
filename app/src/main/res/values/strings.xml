@@ -97,5 +97,7 @@
     <string name="title_timer">Timer!</string>
     <string name="notification_channel_new_ruler">Neuer Regent</string>
     <string name="notification_channel_new_ruler_desc">Neuer Regent</string>
+    <string name="start">starten</string>
+    <string name="title_ranks">Ränge</string>
 
 </resources>

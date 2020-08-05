@@ -18,6 +18,15 @@ public class RanksListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rank_list);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            //ab.setDisplayShowHomeEnabled(true);
+        }
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_ranks);
 
         final RanksAdapter mAdapter = new RanksAdapter(MainActivity.rankList, RanksListActivity.this);
