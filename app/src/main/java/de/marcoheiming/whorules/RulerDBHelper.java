@@ -41,6 +41,7 @@ public class RulerDBHelper extends SQLiteOpenHelper {
         // to simply to discard the data and start over
         db.execSQL(SQL_DELETE_ENTRIES);
         onCreate(db);
+        db.close();
     }
 
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -100,6 +101,7 @@ public class RulerDBHelper extends SQLiteOpenHelper {
             listOfRulers.add(r);
         }
         cursor.close();
+        db.close();
         return listOfRulers;
     }
 

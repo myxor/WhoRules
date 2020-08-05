@@ -41,6 +41,7 @@ public class RankDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DELETE_ENTRIES);
         onCreate(db);
+        db.close();
     }
 
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -83,6 +84,7 @@ public class RankDBHelper extends SQLiteOpenHelper {
             listOfRanks.add(r);
         }
         cursor.close();
+        db.close();
         return listOfRanks;
     }
 
@@ -125,6 +127,7 @@ public class RankDBHelper extends SQLiteOpenHelper {
             return r;
         }
         cursor.close();
+        db.close();
         return null;
     }
 

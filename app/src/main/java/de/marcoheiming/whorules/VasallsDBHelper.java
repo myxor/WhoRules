@@ -40,6 +40,7 @@ public class VasallsDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DELETE_ENTRIES);
         onCreate(db);
+        db.close();
     }
 
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -99,6 +100,7 @@ public class VasallsDBHelper extends SQLiteOpenHelper {
             return v;
         }
         cursor.close();
+        db.close();
         return null;
     }
 
@@ -138,6 +140,7 @@ public class VasallsDBHelper extends SQLiteOpenHelper {
             listOfVasalls.add(v);
         }
         cursor.close();
+        db.close();
         return listOfVasalls;
     }
 }
