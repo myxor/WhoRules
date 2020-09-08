@@ -47,11 +47,11 @@ This app helps enforce this principle.
 
 The following features are implemented:
 
-* Determine regents by chance
+* Determine regents by random
 * List of past regencies
 * Manage list of vacation participants
-* Automatic transport
-* Notification on carriage
+* Automatic promotion
+* Notification on promotion
 * Drink timer
 
 
