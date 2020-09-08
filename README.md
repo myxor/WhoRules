@@ -30,12 +30,16 @@ If someone has governed five full terms during a vacation, then he has the honor
 The current ranks are in ascending order:
 (The ranks are in german)
 
-1. König
-2. Kaiser
-3. Imperator
-4. Pharao
-5. Halbgott
-6. Gott
+* Freiherr
+* Graf
+* Fürst
+* Herzog
+* König
+* Kaiser
+* Imperator
+* Pharao
+* Halbgott
+* Gott
 
 ## What is this app good for?
 
