@@ -313,12 +313,16 @@ public class MainActivity extends AppCompatActivity
 
         MainActivity.rankList.clear();
 
-        MainActivity.rankList.add(new Rank(MainActivity.this, 1, "König"));
-        MainActivity.rankList.add(new Rank(MainActivity.this, 2, "Kaiser"));
-        MainActivity.rankList.add(new Rank(MainActivity.this, 3, "Imperator"));
-        MainActivity.rankList.add(new Rank(MainActivity.this, 4, "Pharao"));
-        MainActivity.rankList.add(new Rank(MainActivity.this, 5, "Halbgott"));
-        MainActivity.rankList.add(new Rank(MainActivity.this, 6, "Gott"));
+        MainActivity.rankList.add(new Rank(MainActivity.this, 1, "Freiherr"));
+        MainActivity.rankList.add(new Rank(MainActivity.this, 2, "Graf"));
+        MainActivity.rankList.add(new Rank(MainActivity.this, 3, "Fürst"));
+        MainActivity.rankList.add(new Rank(MainActivity.this, 4, "Herzog"));
+        MainActivity.rankList.add(new Rank(MainActivity.this, 5, "König"));
+        MainActivity.rankList.add(new Rank(MainActivity.this, 6, "Kaiser"));
+        MainActivity.rankList.add(new Rank(MainActivity.this, 7, "Imperator"));
+        MainActivity.rankList.add(new Rank(MainActivity.this, 8, "Pharao"));
+        MainActivity.rankList.add(new Rank(MainActivity.this, 9, "Halbgott"));
+        MainActivity.rankList.add(new Rank(MainActivity.this, 10, "Gott"));
     }
 
     protected void initVasallList() {

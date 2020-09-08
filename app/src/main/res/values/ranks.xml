@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="ranks">
+        <item>Freiherr</item>
+        <item>Graf</item>
+        <item>Fürst</item>
+        <item>Herzog</item>
         <item>König</item>
         <item>Kaiser</item>
         <item>Imperator</item>
         <item>Pharao</item>
-        <item>Halbgott?</item> <!-- TODO -->
-        <item>Gott</item> <!-- TODO -->
+        <item>Halbgott</item>
+        <item>Gott</item>
     </string-array>
 </resources>
