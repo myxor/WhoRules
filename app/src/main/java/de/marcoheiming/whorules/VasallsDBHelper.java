@@ -100,7 +100,6 @@ public class VasallsDBHelper extends SQLiteOpenHelper {
             return v;
         }
         cursor.close();
-        db.close();
         return null;
     }
 
