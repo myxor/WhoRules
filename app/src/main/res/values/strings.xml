@@ -99,5 +99,6 @@
     <string name="notification_channel_new_ruler_desc">Neuer Regent</string>
     <string name="start">starten</string>
     <string name="title_ranks">Ränge</string>
+    <string name="vote_new_ruler">Neuen Regenten wählen</string>
 
 </resources>

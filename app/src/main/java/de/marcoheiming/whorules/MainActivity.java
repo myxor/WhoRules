@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
@@ -55,18 +56,19 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 fab.setEnabled(false);
 
-                if (vasallList.isEmpty())
+                if (vasallList == null || vasallList.isEmpty() || vasallList.size() == 1)
                 {
-                    Toast toast = Toast.makeText(MainActivity.this, "Sie müssen erst Vasallen anlegen!", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(MainActivity.this, "Sie müssen zu erst mindestens zwei Vasallen anlegen!", Toast.LENGTH_LONG);
                     toast.show();
                 }
                 else
@@ -94,13 +96,13 @@ public class MainActivity extends AppCompatActivity
         });
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -131,8 +133,23 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        if (vasallList.isEmpty() || vasallList.size() == 1)
+        {
+            fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        }
+        else
+        {
+            fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.green)));
+        }
+    }
+
+    @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -196,7 +213,7 @@ public class MainActivity extends AppCompatActivity
             return null;
         }
 
-        // copy list of vasalls and remove current ruler
+        // copy list of vasalls except the current ruler
         List<Vasall> localVasallList = new ArrayList<>();
         for (Vasall v : vasallList) {
             if (currentRuler == null || !v.getName().equals(currentRuler.name)) {
@@ -206,7 +223,7 @@ public class MainActivity extends AppCompatActivity
         // Here the random happens
         int rnd = new Random().nextInt(localVasallList.size());
 
-        Vasall vasall = vasallList.get(rnd);
+        Vasall vasall = localVasallList.get(rnd);
         vasall.increaseNumberOfReigns();
         addNewRulerToList(vasall);
         return rulerChoosen(vasall);
@@ -224,16 +241,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void showCurrentRuler(Ruler ruler) {
-        TextView tv = (TextView) findViewById(R.id.current_ruler_text_field);
+        TextView tv = findViewById(R.id.current_ruler_text_field);
         tv.setText(String.format("%s %s", ruler.rank, ruler.name));
 
-        tv = (TextView) findViewById(R.id.current_ruler_date_text_field);
+        tv = findViewById(R.id.current_ruler_date_text_field);
         String sinceDate = String.format("%s %s", "seit",
                 DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(ruler.startDate));
         tv.setText(sinceDate);
 
 
-        tv = (TextView) findViewById(R.id.current_ruler_date_text_field2);
+        tv = findViewById(R.id.current_ruler_date_text_field2);
         String remaining;
         // 2 hours, TODO: make configurable
         long diff = ((ruler.startDate.getTime() + 2 * 60 * 60 * 1000) - new Date().getTime() / 1000);
@@ -253,9 +270,9 @@ public class MainActivity extends AppCompatActivity
                     } else {
                         if (diff > 60) {
                             diff = diff / 60;
-                            remaining = String.format("~%s Minuten", String.valueOf(diff));
+                            remaining = String.format("~%s Minuten", diff);
                         } else {
-                            remaining = String.format("~%s Sekunden", String.valueOf(diff));
+                            remaining = String.format("~%s Sekunden", diff);
                         }
                     }
                 }
@@ -265,7 +282,7 @@ public class MainActivity extends AppCompatActivity
             tv.setText("");
         }
 
-        ProgressBar progressBar = (ProgressBar) findViewById(R.id.current_ruler_promotion_progressBar);
+        ProgressBar progressBar = findViewById(R.id.current_ruler_promotion_progressBar);
         progressBar.setVisibility(View.VISIBLE);
         progressBar.setProgress(ruler.reignNumber);
     }
@@ -306,7 +323,6 @@ public class MainActivity extends AppCompatActivity
         values.put(RulerContract.RulerEntry.COLUMN_NAME_RANK, newRuler.rank);
 
         db.insert(RulerContract.RulerEntry.TABLE_NAME, null, values);
-
     }
 
     protected void initRankList() {
@@ -333,6 +349,16 @@ public class MainActivity extends AppCompatActivity
 
         for (Vasall v : list) {
             addVasall(MainActivity.this, v.getName(), v.getRank());
+        }
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        if (list.isEmpty() || list.size() == 1)
+        {
+            fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        }
+        else
+        {
+            fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.green)));
         }
     }
 
