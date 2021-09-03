@@ -3,8 +3,8 @@ package de.marcoheiming.whorules;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -18,10 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.TimerViewHolder> {
 

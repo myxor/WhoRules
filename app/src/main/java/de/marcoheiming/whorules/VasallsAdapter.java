@@ -3,9 +3,8 @@ package de.marcoheiming.whorules;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -18,8 +17,6 @@ import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +60,8 @@ public class VasallsAdapter extends RecyclerView.Adapter<VasallsAdapter.VasallVi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final VasallViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final VasallViewHolder holder, int pos) {
+        int position = holder.getAdapterPosition();
         final Vasall vasall = vasallsList.get(position);
         holder.name.setText(vasall.getName());
         holder.rank.setText(vasall.getRank());
@@ -137,7 +135,6 @@ public class VasallsAdapter extends RecyclerView.Adapter<VasallsAdapter.VasallVi
                             case R.id.menu_delete:
 
                                 if (vasall.delete()) {
-
                                     vasallsList.remove(position);
                                     notifyItemRemoved(position);
                                 }
