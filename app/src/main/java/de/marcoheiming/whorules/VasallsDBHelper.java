@@ -2,6 +2,7 @@ package de.marcoheiming.whorules;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
@@ -141,5 +142,14 @@ public class VasallsDBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return listOfVasalls;
+    }
+
+    public long getNumberOfVasallsForRank(Rank rank) {
+        String selection = "rank = ? ";
+        SQLiteDatabase db = this.getReadableDatabase();
+        long c = DatabaseUtils.queryNumEntries(db, VasallsContract.VasallEntry.TABLE_NAME, selection, new String[]{String.valueOf(rank._id)});
+        db.close();
+        System.out.println("getNumberOfVasallsForRank " + rank.name +  " --> " + c);
+        return c;
     }
 }

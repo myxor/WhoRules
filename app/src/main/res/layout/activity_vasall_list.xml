@@ -45,5 +45,6 @@
         app:backgroundTint="@android:color/holo_green_dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_add" />
+        app:srcCompat="@android:drawable/ic_menu_add"
+        android:contentDescription="@string/add_new_vasall" />
 </androidx.constraintlayout.widget.ConstraintLayout>

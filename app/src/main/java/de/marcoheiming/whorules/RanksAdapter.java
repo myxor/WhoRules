@@ -16,13 +16,14 @@ public class RanksAdapter extends RecyclerView.Adapter<RanksAdapter.RankViewHold
     private Context context;
 
     public class RankViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, sort;
+        public TextView name, sort, numberOfVasalls;
 
         public RankViewHolder(View view) {
             super(view);
 
             name = (TextView) view.findViewById(R.id.ranks_list_name);
             sort = (TextView) view.findViewById(R.id.ranks_list_sort);
+            numberOfVasalls = (TextView) view.findViewById(R.id.ranks_list_number_of_people);
 
         }
     }
@@ -51,8 +52,10 @@ public class RanksAdapter extends RecyclerView.Adapter<RanksAdapter.RankViewHold
         final Rank r = ranksList.get(position);
         if (r != null)
         {
+            System.out.println("Rank: " + r.name + " : " + r.numberOfVasallsHoldingThisRank);
             holder.name.setText(r.name);
             holder.sort.setText(String.valueOf(r.sort));
+            holder.numberOfVasalls.setText(String.valueOf(r.numberOfVasallsHoldingThisRank));
         }
     }
 

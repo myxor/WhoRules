@@ -326,9 +326,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     protected void initRankList() {
-
         MainActivity.rankList.clear();
-
         MainActivity.rankList.add(new Rank(MainActivity.this, 1, "Freiherr"));
         MainActivity.rankList.add(new Rank(MainActivity.this, 2, "Graf"));
         MainActivity.rankList.add(new Rank(MainActivity.this, 3, "Fürst"));

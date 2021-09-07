@@ -11,7 +11,7 @@ class Rank {
     long _id;
     int sort;
     String name;
-    int numberOfPeople = 0; // TODO
+    int numberOfVasallsHoldingThisRank = 0; // will be set dynamically
 
     private RankDBHelper dbHelper;
 
@@ -35,5 +35,6 @@ class Rank {
 
         this.sort = sort;
         this.name = name;
+        this.numberOfVasallsHoldingThisRank = (int) new VasallsDBHelper(this.context).getNumberOfVasallsForRank(r);
     }
 }

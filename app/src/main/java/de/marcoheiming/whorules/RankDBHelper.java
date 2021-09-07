@@ -2,6 +2,7 @@ package de.marcoheiming.whorules;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
@@ -15,6 +16,7 @@ public class RankDBHelper extends SQLiteOpenHelper {
     Context context;
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Ranks.db";
+    private final VasallsDBHelper vasallsDBHelper;
 
     List<Rank> listOfRanks = new ArrayList<Rank>();
 
@@ -31,6 +33,7 @@ public class RankDBHelper extends SQLiteOpenHelper {
     public RankDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
+        this.vasallsDBHelper = new VasallsDBHelper(this.context);
     }
 
     public void onCreate(SQLiteDatabase db) {
@@ -79,7 +82,7 @@ public class RankDBHelper extends SQLiteOpenHelper {
             r._id = cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID));
             r.sort = cursor.getInt(cursor.getColumnIndexOrThrow(RankContract.RankEntry.COLUMN_NAME_SORT));
             r.name = cursor.getString(cursor.getColumnIndexOrThrow(RankContract.RankEntry.COLUMN_NAME_NAME));
-            r.numberOfPeople = 0; // TODO
+            r.numberOfVasallsHoldingThisRank = (int) vasallsDBHelper.getNumberOfVasallsForRank(r);
 
             listOfRanks.add(r);
         }
@@ -122,7 +125,8 @@ public class RankDBHelper extends SQLiteOpenHelper {
             r._id = cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID));
             r.sort = cursor.getInt(cursor.getColumnIndexOrThrow(RankContract.RankEntry.COLUMN_NAME_SORT));
             r.name = cursor.getString(cursor.getColumnIndexOrThrow(RankContract.RankEntry.COLUMN_NAME_NAME));
-            r.numberOfPeople = 0; // TODO
+            r.numberOfVasallsHoldingThisRank = (int) vasallsDBHelper.getNumberOfVasallsForRank(r);
+
             cursor.close();
             return r;
         }

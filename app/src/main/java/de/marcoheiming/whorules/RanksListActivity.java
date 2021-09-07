@@ -34,48 +34,6 @@ public class RanksListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
-
-
-/*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_people_add);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Context context = RanksListActivity.this;
-                LinearLayout layout = new LinearLayout(context);
-                layout.setOrientation(LinearLayout.VERTICAL);
-
-                final EditText nameText = new EditText(context);
-                nameText.setHint("Name");
-                layout.addView(nameText);
-
-                final EditText rankText = new EditText(context);
-                rankText.setHint("Rank");
-                layout.addView(rankText);
-
-                final EditText norText = new EditText(context);
-                norText.setHint("Anzahl Regentschaften");
-                norText.setText("0");
-                norText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                layout.addView(norText);
-
-                new AlertDialog.Builder(RanksListActivity.this)
-                        .setTitle("Vasalle hinzufügen")
-                        .setMessage("Bitte gebe den Namen und Rank des neuen Vasallen ein:")
-                        .setIcon(android.R.drawable.ic_menu_add)
-                        .setView(layout)
-                        .setPositiveButton("Hinzufügen", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                ma.addVasall(getApplicationContext(), nameText.getText().toString(), rankText.getText().toString());
-                                mAdapter.notifyDataSetChanged();
-
-                            }
-                        }).show();
-            }
-        });
-        */
-
         mAdapter.notifyDataSetChanged();
     }
 

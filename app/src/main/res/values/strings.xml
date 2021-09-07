@@ -100,5 +100,6 @@
     <string name="start">starten</string>
     <string name="title_ranks">Ränge</string>
     <string name="vote_new_ruler">Neuen Regenten wählen</string>
+    <string name="add_new_vasall">Neuen Vasallen erstellen</string>
 
 </resources>
