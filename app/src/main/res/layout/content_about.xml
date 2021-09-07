@@ -31,14 +31,24 @@
             android:contentDescription="Logo"
             app:srcCompat="@mipmap/ic_launcher_foreground" />
 
+
         <TextView
-            android:id="@+id/textView3"
-            android:layout_width="185dp"
-            android:layout_height="19dp"
+            android:id="@+id/textViewIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:autoLink="web"
+            android:text="Icon from materialdesignicons.com" />
+
+        <TextView
+            android:id="@+id/textViewSourceLink"
+            android:layout_width="258dp"
+            android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
-            android:text="github.com/myxor/WhoRules" />
+            android:layout_marginTop="10dp"
+            android:autoLink="web"
+            android:text="Source: github.com/myxor/WhoRules" />
 
     </LinearLayout>
 
