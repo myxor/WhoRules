@@ -1,5 +1,6 @@
 package de.marcoheiming.whorules;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -14,7 +15,7 @@ import java.util.List;
 public class RankDBHelper extends SQLiteOpenHelper {
 
     Context context;
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "Ranks.db";
     private final VasallsDBHelper vasallsDBHelper;
 
@@ -25,7 +26,8 @@ public class RankDBHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + RankContract.RankEntry.TABLE_NAME + " (" +
                     RankContract.RankEntry._ID + " INTEGER PRIMARY KEY," +
                     RankContract.RankEntry.COLUMN_NAME_SORT + " INTEGER," +
-                    RankContract.RankEntry.COLUMN_NAME_NAME + " TEXT)";
+                    RankContract.RankEntry.COLUMN_NAME_NAME + " TEXT," +
+                    RankContract.RankEntry.COLUMN_NAME_NUMBER_OF_VASALLS + " INTEGER)";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + RankContract.RankEntry.TABLE_NAME;
@@ -42,9 +44,14 @@ public class RankDBHelper extends SQLiteOpenHelper {
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(SQL_DELETE_ENTRIES);
-        onCreate(db);
-        db.close();
+        if (oldVersion == 1 && newVersion == 2) {
+            db.execSQL("ALTER TABLE " + RankContract.RankEntry.TABLE_NAME +
+                    " ADD COLUMN " + RankContract.RankEntry.COLUMN_NAME_NUMBER_OF_VASALLS + " INTEGER;");
+        } else {
+            db.execSQL(SQL_DELETE_ENTRIES);
+            onCreate(db);
+            db.close();
+        }
     }
 
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -59,7 +66,8 @@ public class RankDBHelper extends SQLiteOpenHelper {
         String[] projection = {
                 BaseColumns._ID,
                 RankContract.RankEntry.COLUMN_NAME_SORT,
-                RankContract.RankEntry.COLUMN_NAME_NAME
+                RankContract.RankEntry.COLUMN_NAME_NAME,
+                RankContract.RankEntry.COLUMN_NAME_NUMBER_OF_VASALLS
         };
 
         // How you want the results sorted in the resulting Cursor
@@ -76,13 +84,13 @@ public class RankDBHelper extends SQLiteOpenHelper {
                 sortOrder               // The sort order
         );
 
-        List<Rank> listOfRanks= new ArrayList<Rank>();
+        List<Rank> listOfRanks = new ArrayList<Rank>();
         while (cursor.moveToNext()) {
             Rank r = new Rank();
             r._id = cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID));
             r.sort = cursor.getInt(cursor.getColumnIndexOrThrow(RankContract.RankEntry.COLUMN_NAME_SORT));
             r.name = cursor.getString(cursor.getColumnIndexOrThrow(RankContract.RankEntry.COLUMN_NAME_NAME));
-            r.numberOfVasallsHoldingThisRank = (int) vasallsDBHelper.getNumberOfVasallsForRank(r);
+            r.numberOfVasallsHoldingThisRank = cursor.getInt(cursor.getColumnIndexOrThrow(RankContract.RankEntry.COLUMN_NAME_NUMBER_OF_VASALLS));
 
             listOfRanks.add(r);
         }
@@ -100,7 +108,8 @@ public class RankDBHelper extends SQLiteOpenHelper {
         String[] projection = {
                 BaseColumns._ID,
                 RankContract.RankEntry.COLUMN_NAME_SORT,
-                RankContract.RankEntry.COLUMN_NAME_NAME
+                RankContract.RankEntry.COLUMN_NAME_NAME,
+                RankContract.RankEntry.COLUMN_NAME_NUMBER_OF_VASALLS
         };
 
         String selection = RankContract.RankEntry.COLUMN_NAME_NAME + " = ?";
@@ -125,7 +134,7 @@ public class RankDBHelper extends SQLiteOpenHelper {
             r._id = cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID));
             r.sort = cursor.getInt(cursor.getColumnIndexOrThrow(RankContract.RankEntry.COLUMN_NAME_SORT));
             r.name = cursor.getString(cursor.getColumnIndexOrThrow(RankContract.RankEntry.COLUMN_NAME_NAME));
-            r.numberOfVasallsHoldingThisRank = (int) vasallsDBHelper.getNumberOfVasallsForRank(r);
+            r.numberOfVasallsHoldingThisRank = cursor.getInt(cursor.getColumnIndexOrThrow(RankContract.RankEntry.COLUMN_NAME_NUMBER_OF_VASALLS));
 
             cursor.close();
             return r;
@@ -148,24 +157,37 @@ public class RankDBHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    Rank getNextHigherRank(Rank rank)
-    {
+    Rank getNextHigherRank(Rank rank) {
         if (listOfRanks.isEmpty()) {
             listOfRanks = getListOfRanks();
         }
 
         int index = listOfRanks.indexOf(rank);
 
-        if (index >= 0 && listOfRanks.size() > (index + 1))
-        {
+        if (index >= 0 && listOfRanks.size() > (index + 1)) {
             return listOfRanks.get(++index);
-        }
-        else
-        {
+        } else {
             Toast toast = Toast.makeText(context, "FEHLER: Kein höherer Rang als " + rank.name + " gefunden!", Toast.LENGTH_LONG);
             toast.show();
         }
         return null;
+    }
+
+    public void updateNumberOfVasallsHoldingTheRankForRank(int rankId) {
+        Rank rank = getRankById(rankId);
+        if (rank != null) {
+            rank.numberOfVasallsHoldingThisRank = (int) vasallsDBHelper.getNumberOfVasallsForRank(rank);
+
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(RankContract.RankEntry.COLUMN_NAME_NAME, rank.name);
+            values.put(RankContract.RankEntry.COLUMN_NAME_SORT, rank.sort);
+            values.put(RankContract.RankEntry.COLUMN_NAME_NUMBER_OF_VASALLS, rank.numberOfVasallsHoldingThisRank);
+
+            db.update(RankContract.RankEntry.TABLE_NAME, values, "_id = ?", new String[]{String.valueOf(rank._id)});
+            db.close();
+        }
     }
 
 }

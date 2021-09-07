@@ -5,8 +5,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+
 import android.widget.Toast;
 
 public class Vasall {
@@ -86,6 +88,8 @@ public class Vasall {
             this.numberOfReigns = v.numberOfReigns;
             this.rank = v.rank;
         }
+
+        new RankDBHelper(this.context).updateNumberOfVasallsHoldingTheRankForRank(rank);
     }
 
     public long getId() {
@@ -131,7 +135,7 @@ public class Vasall {
             if (currentRank != null) {
                 Rank newRank = rankDBHelper.getNextHigherRank(currentRank);
                 if (newRank != null) {
-                    this.setRank((int)newRank._id);
+                    this.setRank((int) newRank._id);
                     this.setNumberOfReigns(0);
 
                     Toast toast = Toast.makeText(context, this.name + " aufgestiegen von " + currentRank.name + " zu " + newRank.name, Toast.LENGTH_LONG);
@@ -158,7 +162,7 @@ public class Vasall {
                     this.setRank("?");
                     this.setNumberOfReigns(0);
 
-                    Toast toast = Toast.makeText(context, this.name + " aufgestiegen von " + currentRank.name + " zu (unbekannter Rank)" , Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(context, this.name + " aufgestiegen von " + currentRank.name + " zu (unbekannter Rank)", Toast.LENGTH_LONG);
                     toast.show();
                 }
             }
@@ -188,6 +192,8 @@ public class Vasall {
 
     public void setRank(String rank) {
 
+        int oldRankId = this.rank;
+
         RankDBHelper rankDBHelper = new RankDBHelper(this.context);
         Rank r = rankDBHelper.getRankFromName(rank);
         if (r != null) {
@@ -195,6 +201,8 @@ public class Vasall {
         } else {
             this.rank = 0; // Not good
         }
+
+        new RankDBHelper(this.context).updateNumberOfVasallsHoldingTheRankForRank(oldRankId);
 
         updateVasallInDB();
     }

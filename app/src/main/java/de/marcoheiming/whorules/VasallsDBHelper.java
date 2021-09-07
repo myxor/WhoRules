@@ -145,11 +145,14 @@ public class VasallsDBHelper extends SQLiteOpenHelper {
     }
 
     public long getNumberOfVasallsForRank(Rank rank) {
+        if (rank == null) {
+            return 0;
+        }
+
         String selection = "rank = ? ";
         SQLiteDatabase db = this.getReadableDatabase();
         long c = DatabaseUtils.queryNumEntries(db, VasallsContract.VasallEntry.TABLE_NAME, selection, new String[]{String.valueOf(rank._id)});
         db.close();
-        System.out.println("getNumberOfVasallsForRank " + rank.name +  " --> " + c);
         return c;
     }
 }

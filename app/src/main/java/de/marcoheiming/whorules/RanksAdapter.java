@@ -52,7 +52,6 @@ public class RanksAdapter extends RecyclerView.Adapter<RanksAdapter.RankViewHold
         final Rank r = ranksList.get(position);
         if (r != null)
         {
-            System.out.println("Rank: " + r.name + " : " + r.numberOfVasallsHoldingThisRank);
             holder.name.setText(r.name);
             holder.sort.setText(String.valueOf(r.sort));
             holder.numberOfVasalls.setText(String.valueOf(r.numberOfVasallsHoldingThisRank));
