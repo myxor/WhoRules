@@ -1,7 +1,9 @@
 package de.marcoheiming.whorules;
 
+import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -138,8 +140,14 @@ public class Vasall {
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(this.context, MainActivity.NOTIFICATION_CHANNEL_PROMOTION_ID)
                             .setSmallIcon(R.drawable.ic_people)
                             .setContentTitle(this.name + " ist aufgestiegen")
-                            .setContentText(this.name + " ist nun ein " + newRank.name)
-                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                            .setContentText(this.name + " ist nun vom Rank " + newRank.name)
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                            .setAutoCancel(true)
+                            .setOngoing(true);
+
+                    PendingIntent contentIntent = PendingIntent.getActivity(this.context, 0,
+                            new Intent(this.context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+                    builder.setContentIntent(contentIntent);
 
                     NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this.context);
                     int notificationId = 0; // TODO save it
@@ -149,6 +157,9 @@ public class Vasall {
                     // No new rank found. What do we do now?
                     this.setRank("?");
                     this.setNumberOfReigns(0);
+
+                    Toast toast = Toast.makeText(context, this.name + " aufgestiegen von " + currentRank.name + " zu (unbekannter Rank)" , Toast.LENGTH_LONG);
+                    toast.show();
                 }
             }
         }
