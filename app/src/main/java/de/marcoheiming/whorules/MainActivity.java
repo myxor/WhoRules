@@ -123,13 +123,21 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-
         // Init DB tables and arrays:
         initRankList();
 
         initVasallList();
 
         initRulerList();
+
+
+        // Update main menu:
+        Menu menu = navigationView.getMenu();
+        MenuItem navVasalls = menu.findItem(R.id.nav_people);
+        if (navVasalls != null)
+        {
+            navVasalls.setTitle(R.string.pref_header_people + " (" + MainActivity.vasallList.size() + ")");
+        }
     }
 
     @Override
@@ -144,6 +152,15 @@ public class MainActivity extends AppCompatActivity
         else
         {
             fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.green)));
+        }
+
+        // Update main menu:
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        Menu menu = navigationView.getMenu();
+        MenuItem navVasalls = menu.findItem(R.id.nav_people);
+        if (navVasalls != null)
+        {
+            navVasalls.setTitle(getString(R.string.pref_header_people) + " (" + MainActivity.vasallList.size() + ")");
         }
     }
 
@@ -226,14 +243,14 @@ public class MainActivity extends AppCompatActivity
         Vasall vasall = localVasallList.get(rnd);
         vasall.increaseNumberOfReigns();
         addNewRulerToList(vasall);
-        return rulerChoosen(vasall);
+        return rulerChosen(vasall);
     }
 
-    private Ruler rulerChoosen(Vasall v) {
+    private Ruler rulerChosen(Vasall v) {
         currentRuler = new Ruler();
 
         currentRuler.name = v.getName();
-        currentRuler.rank = v.getRank();
+        currentRuler.rank = v.getRankId();
         currentRuler.startDate = Calendar.getInstance().getTime();
         currentRuler.reignNumber = v.getNumberOfReigns();
 
@@ -290,7 +307,7 @@ public class MainActivity extends AppCompatActivity
     private void addNewRulerToList(Vasall v) {
         Ruler newRuler = new Ruler();
         newRuler.name = v.getName();
-        newRuler.rank = v.getRank();
+        newRuler.rank = v.getRankId();
         newRuler.startDate = Calendar.getInstance().getTime();
 
         previousRulers.add(newRuler);
@@ -346,7 +363,7 @@ public class MainActivity extends AppCompatActivity
         List<Vasall> list = db.getListOfVasalls();
 
         for (Vasall v : list) {
-            addVasall(MainActivity.this, v.getName(), v.getRank());
+            addVasall(MainActivity.this, v.getName(), v.getRankId());
         }
 
         FloatingActionButton fab = findViewById(R.id.fab);
