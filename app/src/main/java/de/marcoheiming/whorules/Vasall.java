@@ -18,7 +18,7 @@ public class Vasall {
     private long _id;
     private String name;
     private int numberOfReigns = 0;
-    private int rank = DEFAULT_RANK;
+    private int rankId = DEFAULT_RANK;
 
     private static final int DEFAULT_RANK = 1;
 
@@ -38,37 +38,37 @@ public class Vasall {
 
         this.dbHelper = new VasallsDBHelper(this.context);
 
-        this.createVasall(name, this.rank);
+        this.createVasall(name, this.rankId);
     }
 
-    public Vasall(Context context, String name, String rank) {
+    public Vasall(Context context, String name, String rankId) {
 
         this.context = context;
         this.name = name;
 
         RankDBHelper rankDBHelper = new RankDBHelper(this.context);
-        Rank r = rankDBHelper.getRankFromName(rank);
+        Rank r = rankDBHelper.getRankFromName(rankId);
 
         if (r != null) {
-            this.rank = (int) r._id;
+            this.rankId = (int) r._id;
         } else {
-            this.rank = DEFAULT_RANK;
+            this.rankId = DEFAULT_RANK;
         }
 
         this.dbHelper = new VasallsDBHelper(this.context);
 
-        this.createVasall(name, this.rank);
+        this.createVasall(name, this.rankId);
     }
 
-    public Vasall(Context context, String name, int rank) {
+    public Vasall(Context context, String name, int rankId) {
 
         this.context = context;
         this.name = name;
-        this.rank = rank;
+        this.rankId = rankId;
 
         this.dbHelper = new VasallsDBHelper(this.context);
 
-        this.createVasall(name, rank);
+        this.createVasall(name, rankId);
     }
 
     private void createVasall(String name, int rank) {
@@ -86,7 +86,7 @@ public class Vasall {
             this._id = v._id;
             this.name = v.name;
             this.numberOfReigns = v.numberOfReigns;
-            this.rank = v.rank;
+            this.rankId = v.rankId;
         }
 
         new RankDBHelper(this.context).updateNumberOfVasallsHoldingTheRankForRank(rank);
@@ -131,11 +131,11 @@ public class Vasall {
         // Set new rank
         if (this.numberOfReigns > 5) {
             RankDBHelper rankDBHelper = new RankDBHelper(this.context);
-            Rank currentRank = rankDBHelper.getRankById(this.rank);
+            Rank currentRank = rankDBHelper.getRankById(this.rankId);
             if (currentRank != null) {
                 Rank newRank = rankDBHelper.getNextHigherRank(currentRank);
                 if (newRank != null) {
-                    this.setRank((int) newRank._id);
+                    this.setRankId((int) newRank._id);
                     this.setNumberOfReigns(0);
 
                     Toast toast = Toast.makeText(context, this.name + " aufgestiegen von " + currentRank.name + " zu " + newRank.name, Toast.LENGTH_LONG);
@@ -171,10 +171,10 @@ public class Vasall {
         updateVasallInDB();
     }
 
-    public String getRank() {
+    public String getRankId() {
 
         RankDBHelper rankDBHelper = new RankDBHelper(this.context);
-        Rank r = rankDBHelper.getRankById(this.rank);
+        Rank r = rankDBHelper.getRankById(this.rankId);
         if (r != null) {
             return r.name;
         } else {
@@ -182,9 +182,9 @@ public class Vasall {
         }
     }
 
-    public void setRank(int rank) {
+    public void setRankId(int rankId) {
 
-        this.rank = rank;
+        this.rankId = rankId;
 
         updateVasallInDB();
     }
@@ -192,17 +192,18 @@ public class Vasall {
 
     public void setRank(String rank) {
 
-        int oldRankId = this.rank;
+        int oldRankId = this.rankId;
 
         RankDBHelper rankDBHelper = new RankDBHelper(this.context);
         Rank r = rankDBHelper.getRankFromName(rank);
         if (r != null) {
-            this.rank = (int) r._id;
+            this.rankId = (int) r._id;
         } else {
-            this.rank = 0; // Not good
+            this.rankId = 0; // Not good
         }
 
         new RankDBHelper(this.context).updateNumberOfVasallsHoldingTheRankForRank(oldRankId);
+        new RankDBHelper(this.context).updateNumberOfVasallsHoldingTheRankForRank(this.rankId);
 
         updateVasallInDB();
     }
@@ -213,16 +214,20 @@ public class Vasall {
 
             ContentValues values = new ContentValues();
             values.put(VasallsContract.VasallEntry.COLUMN_NAME_NAME, name);
-            values.put(VasallsContract.VasallEntry.COLUMN_NAME_RANK, rank);
+            values.put(VasallsContract.VasallEntry.COLUMN_NAME_RANK, rankId);
             values.put(VasallsContract.VasallEntry.COLUMN_NAME_NOR, numberOfReigns);
 
             db.update(VasallsContract.VasallEntry.TABLE_NAME, values, "_id = ?", new String[]{String.valueOf(_id)});
+
+            new RankDBHelper(this.context).updateNumberOfVasallsHoldingTheRankForRank(this.rankId);
         }
     }
 
     public boolean delete() {
         if (dbHelper != null) {
             SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+            new RankDBHelper(this.context).updateNumberOfVasallsHoldingTheRankForRank(this.rankId);
 
             if (_id > 0) {
                 return db.delete(VasallsContract.VasallEntry.TABLE_NAME, "_id = ?", new String[]{String.valueOf(_id)}) > 0;

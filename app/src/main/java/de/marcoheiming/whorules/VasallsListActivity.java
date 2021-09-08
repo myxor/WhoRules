@@ -82,6 +82,7 @@ public class VasallsListActivity extends AppCompatActivity {
                 spinnerArrayAdapter.setDropDownViewResource(android.R.layout
                         .simple_spinner_dropdown_item);
                 rankSpinner.setAdapter(spinnerArrayAdapter);
+                rankSpinner.setPadding(0, 20, 0, 20);
                 layout.addView(rankSpinner);
 
                 final EditText norText = new EditText(context);
@@ -92,7 +93,7 @@ public class VasallsListActivity extends AppCompatActivity {
 
                 new AlertDialog.Builder(VasallsListActivity.this)
                         .setTitle("Vasalle hinzufügen")
-                        .setMessage("Bitte gebe den Namen, Rang und Anzahl Regentschaften des neuen Vasallen ein:")
+                        .setMessage("Bitte gebe den Namen, Rang und Anzahl der Regentschaften des neuen Vasallen ein:")
                         .setIcon(android.R.drawable.ic_menu_add)
                         .setView(layout)
                         .setPositiveButton("Hinzufügen", new DialogInterface.OnClickListener() {
@@ -110,10 +111,9 @@ public class VasallsListActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

@@ -95,7 +95,7 @@ public class VasallsDBHelper extends SQLiteOpenHelper {
             Vasall v = new Vasall();
             v.setId(cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID)));
             v.setName(cursor.getString(cursor.getColumnIndexOrThrow(VasallsContract.VasallEntry.COLUMN_NAME_NAME)));
-            v.setRank(cursor.getInt(cursor.getColumnIndexOrThrow(VasallsContract.VasallEntry.COLUMN_NAME_RANK)));
+            v.setRankId(cursor.getInt(cursor.getColumnIndexOrThrow(VasallsContract.VasallEntry.COLUMN_NAME_RANK)));
             v.setNumberOfReigns((int) cursor.getLong(cursor.getColumnIndexOrThrow(VasallsContract.VasallEntry.COLUMN_NAME_NOR)));
             cursor.close();
             return v;
@@ -134,7 +134,7 @@ public class VasallsDBHelper extends SQLiteOpenHelper {
             Vasall v = new Vasall(this.context);
             v.setId(cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID)));
             v.setName(cursor.getString(cursor.getColumnIndexOrThrow(VasallsContract.VasallEntry.COLUMN_NAME_NAME)));
-            v.setRank(cursor.getInt(cursor.getColumnIndexOrThrow(VasallsContract.VasallEntry.COLUMN_NAME_RANK)));
+            v.setRankId(cursor.getInt(cursor.getColumnIndexOrThrow(VasallsContract.VasallEntry.COLUMN_NAME_RANK)));
             v.setNumberOfReigns((int) cursor.getLong(cursor.getColumnIndexOrThrow(VasallsContract.VasallEntry.COLUMN_NAME_NOR)));
 
             listOfVasalls.add(v);

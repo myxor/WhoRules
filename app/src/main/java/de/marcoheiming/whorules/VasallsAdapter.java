@@ -3,8 +3,10 @@ package de.marcoheiming.whorules;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -64,11 +66,10 @@ public class VasallsAdapter extends RecyclerView.Adapter<VasallsAdapter.VasallVi
         int position = holder.getAdapterPosition();
         final Vasall vasall = vasallsList.get(position);
         holder.name.setText(vasall.getName());
-        holder.rank.setText(vasall.getRank());
+        holder.rank.setText(vasall.getRankId());
 
         holder.numberOfReigns.setText(String.format("%s / 5", String.valueOf(vasall.getNumberOfReigns())));
         holder.progressBar.setProgress(vasall.getNumberOfReigns());
-
 
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,14 +91,13 @@ public class VasallsAdapter extends RecyclerView.Adapter<VasallsAdapter.VasallVi
                                 layout.addView(nameText);
 
                                 final Spinner rankSpinner = new Spinner(context);
-                                int selectionPosition = 0; int i = 0;
+                                int selectionPosition = 0;
+                                int i = 0;
                                 ArrayList<String> spinnerArray = new ArrayList<String>();
                                 List<Rank> ranks = new RankDBHelper(context).getListOfRanks();
-                                for (Rank r : ranks)
-                                {
+                                for (Rank r : ranks) {
                                     spinnerArray.add(r.name);
-                                    if (r.name.equals(vasall.getRank()))
-                                    {
+                                    if (r.name.equals(vasall.getRankId())) {
                                         selectionPosition = i;
                                     }
                                     i++;
@@ -109,6 +109,7 @@ public class VasallsAdapter extends RecyclerView.Adapter<VasallsAdapter.VasallVi
                                         .simple_spinner_dropdown_item);
                                 rankSpinner.setAdapter(spinnerArrayAdapter);
                                 rankSpinner.setSelection(selectionPosition);
+                                rankSpinner.setPadding(0, 20, 0, 20);
                                 layout.addView(rankSpinner);
 
                                 final EditText norText = new EditText(context);
@@ -119,7 +120,7 @@ public class VasallsAdapter extends RecyclerView.Adapter<VasallsAdapter.VasallVi
 
                                 new AlertDialog.Builder(context)
                                         .setTitle("Vasalle bearbeiten")
-                                        .setMessage("Bitte gebe den Namen, Rang und Anzahl Regentschaften des Vasallen " + vasall.getName() + " ein:")
+                                        .setMessage("Bitte gebe den Namen, Rang und Anzahl der Regentschaften des Vasallen " + vasall.getName() + " ein:")
                                         .setIcon(android.R.drawable.ic_menu_add)
                                         .setView(layout)
                                         .setPositiveButton("Speichern", new DialogInterface.OnClickListener() {
@@ -128,7 +129,7 @@ public class VasallsAdapter extends RecyclerView.Adapter<VasallsAdapter.VasallVi
                                                 vasall.setRank(rankSpinner.getSelectedItem().toString());
                                                 vasall.setNumberOfReigns(Integer.parseInt(norText.getText().toString()));
 
-                                                notifyDataSetChanged();
+                                                notifyItemChanged(position);
                                             }
                                         }).show();
                                 break;
@@ -147,7 +148,7 @@ public class VasallsAdapter extends RecyclerView.Adapter<VasallsAdapter.VasallVi
                 //displaying the popup
                 popup.show();
 
-                notifyDataSetChanged();
+                notifyItemChanged(position);
             }
         });
 
