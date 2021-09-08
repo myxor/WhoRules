@@ -173,7 +173,7 @@ public class RankDBHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    public void updateNumberOfVasallsHoldingTheRankForRank(int rankId) {
+    public Rank updateNumberOfVasallsHoldingTheRankForRank(int rankId) {
         Rank rank = getRankById(rankId);
         if (rank != null) {
             rank.numberOfVasallsHoldingThisRank = (int) vasallsDBHelper.getNumberOfVasallsForRank(rank);
@@ -187,7 +187,9 @@ public class RankDBHelper extends SQLiteOpenHelper {
 
             db.update(RankContract.RankEntry.TABLE_NAME, values, "_id = ?", new String[]{String.valueOf(rank._id)});
             db.close();
+            return rank;
         }
+        return null;
     }
 
 }

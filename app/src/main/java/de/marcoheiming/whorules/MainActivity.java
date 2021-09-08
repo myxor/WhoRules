@@ -1,5 +1,6 @@
 package de.marcoheiming.whorules;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -11,14 +12,19 @@ import android.content.res.ColorStateList;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import android.view.View;
+
 import com.google.android.material.navigation.NavigationView;
+
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -66,16 +72,13 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 fab.setEnabled(false);
 
-                if (vasallList == null || vasallList.isEmpty() || vasallList.size() == 1)
-                {
+                if (vasallList == null || vasallList.isEmpty() || vasallList.size() == 1) {
                     Toast toast = Toast.makeText(MainActivity.this, "Sie müssen zu erst mindestens zwei Vasallen anlegen!", Toast.LENGTH_LONG);
                     toast.show();
-                }
-                else
-                {
+                } else {
                     new AlertDialog.Builder(MainActivity.this)
-                            .setTitle("Wählen")
-                            .setMessage("Willst du wirklich einen neuen Regent wählen?")
+                            .setTitle("Neuer Regend")
+                            .setMessage("Willst du wirklich einen neuen Regent bestimmen?")
                             .setIcon(android.R.drawable.ic_media_next)
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
@@ -134,8 +137,7 @@ public class MainActivity extends AppCompatActivity
         // Update main menu:
         Menu menu = navigationView.getMenu();
         MenuItem navVasalls = menu.findItem(R.id.nav_people);
-        if (navVasalls != null)
-        {
+        if (navVasalls != null) {
             navVasalls.setTitle(R.string.pref_header_people + " (" + MainActivity.vasallList.size() + ")");
         }
     }
@@ -145,12 +147,9 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        if (vasallList.isEmpty() || vasallList.size() == 1)
-        {
+        if (vasallList.isEmpty() || vasallList.size() == 1) {
             fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.red)));
-        }
-        else
-        {
+        } else {
             fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.green)));
         }
 
@@ -158,8 +157,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         Menu menu = navigationView.getMenu();
         MenuItem navVasalls = menu.findItem(R.id.nav_people);
-        if (navVasalls != null)
-        {
+        if (navVasalls != null) {
             navVasalls.setTitle(getString(R.string.pref_header_people) + " (" + MainActivity.vasallList.size() + ")");
         }
     }
@@ -225,8 +223,7 @@ public class MainActivity extends AppCompatActivity
 
     public Ruler chooseNextRandomRuler() {
 
-        if (vasallList.isEmpty())
-        {
+        if (vasallList.isEmpty()) {
             return null;
         }
 
@@ -317,7 +314,7 @@ public class MainActivity extends AppCompatActivity
 
         if (previousRulersAdapter == null) {
             // Create an ArrayAdapter from List
-            previousRulersAdapter = new ArrayAdapter<String>
+            previousRulersAdapter = new ArrayAdapter<>
                     (this, android.R.layout.simple_list_item_activated_1, previousRulerNames);
 
             // DataBind ListView with items from ArrayAdapter
@@ -335,7 +332,7 @@ public class MainActivity extends AppCompatActivity
 
         ContentValues values = new ContentValues();
         values.put(RulerContract.RulerEntry.COLUMN_NAME_VASALL_ID, v.getId());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         values.put(RulerContract.RulerEntry.COLUMN_NAME_SINCE, sdf.format(newRuler.startDate));
         values.put(RulerContract.RulerEntry.COLUMN_NAME_RANK, newRuler.rank);
 
@@ -367,12 +364,9 @@ public class MainActivity extends AppCompatActivity
         }
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        if (list.isEmpty() || list.size() == 1)
-        {
+        if (list.isEmpty() || list.size() == 1) {
             fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.red)));
-        }
-        else
-        {
+        } else {
             fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.green)));
         }
     }

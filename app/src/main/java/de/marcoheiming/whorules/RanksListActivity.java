@@ -9,9 +9,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 
+import java.util.List;
+
 public class RanksListActivity extends AppCompatActivity {
 
-
+    List<Rank> ranks;
+    RanksAdapter mAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +32,41 @@ public class RanksListActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_ranks);
 
-        final RanksAdapter mAdapter = new RanksAdapter(MainActivity.rankList, RanksListActivity.this);
+        RankDBHelper rankDBHelper = new RankDBHelper(this);
+
+        ranks = rankDBHelper.getListOfRanks();
+        for (int i = 0; i < ranks.size(); i++) {
+            Rank r = ranks.get(i);
+            if (r._id > 0) {
+                r = rankDBHelper.updateNumberOfVasallsHoldingTheRankForRank((int)r._id);
+                ranks.set(i, r);
+            }
+        }
+
+        mAdapter = new RanksAdapter(ranks, RanksListActivity.this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        RankDBHelper rankDBHelper = new RankDBHelper(this);
+
+        ranks = rankDBHelper.getListOfRanks();
+
+        for (int i = 0; i < ranks.size(); i++) {
+            Rank r = ranks.get(i);
+            if (r._id > 0) {
+                r = rankDBHelper.updateNumberOfVasallsHoldingTheRankForRank((int)r._id);
+                ranks.set(i, r);
+            }
+        }
+        mAdapter = new RanksAdapter(ranks, RanksListActivity.this);
         mAdapter.notifyDataSetChanged();
     }
 
