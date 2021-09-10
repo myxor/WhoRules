@@ -94,12 +94,19 @@
     <string name="timer">Timer</string>
     <string name="since">seit</string>
     <string name="title_vasalls_list">Liste der Vasallen</string>
-    <string name="title_timer">Timer!</string>
+    <string name="title_timer">Timer</string>
     <string name="notification_channel_new_ruler">Neuer Regent</string>
     <string name="notification_channel_new_ruler_desc">Neuer Regent</string>
     <string name="start">starten</string>
     <string name="title_ranks">Ränge</string>
     <string name="vote_new_ruler">Neuen Regenten wählen</string>
     <string name="add_new_vasall">Neuen Vasallen erstellen</string>
+    <string name="beers">Biere</string>
+    <string name="add_new_beer">Neues Bier</string>
+    <string name="count">Anzahl</string>
+    <string name="prosecutors">Ankläger</string>
+    <string name="description">Grund</string>
+    <string name="defendant">Angeklagter</string>
+    <string name="numberOfBeers">Anzahl Biere</string>
 
 </resources>

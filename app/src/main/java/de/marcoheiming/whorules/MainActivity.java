@@ -206,8 +206,8 @@ public class MainActivity extends AppCompatActivity
             intent = new Intent(this, VasallsListActivity.class);
         } else if (id == R.id.nav_timer) {
             intent = new Intent(this, TimerActivity.class);
-        } else if (id == R.id.nav_manage) {
-            intent = new Intent(this, SettingsActivity.class);
+        } else if (id == R.id.nav_beers) {
+            intent = new Intent(this, BeersListActivity.class);
         } else if (id == R.id.nav_ranks) {
             intent = new Intent(this, RanksListActivity.class);
         }

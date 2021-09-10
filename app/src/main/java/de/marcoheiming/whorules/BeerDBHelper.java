@@ -12,23 +12,26 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RulerDBHelper extends SQLiteOpenHelper {
+public class BeerDBHelper extends SQLiteOpenHelper {
 
     Context context;
-    public static final int DATABASE_VERSION = 2;
-    public static final String DATABASE_NAME = "Rulers.db";
+    public static final int DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME = "Beers.db";
 
     private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + RulerContract.RulerEntry.TABLE_NAME + " (" +
-                    RulerContract.RulerEntry._ID + " INTEGER PRIMARY KEY," +
-                    RulerContract.RulerEntry.COLUMN_NAME_VASALL_ID + " INTEGER," +
-                    RulerContract.RulerEntry.COLUMN_NAME_SINCE + " TEXT, " +
-                    RulerContract.RulerEntry.COLUMN_NAME_RANK + " TEXT)";
+            "CREATE TABLE " + BeerContract.BeerEntry.TABLE_NAME + " (" +
+                    BeerContract.BeerEntry._ID + " INTEGER PRIMARY KEY," +
+                    BeerContract.BeerEntry.COLUMN_NAME_DATE + " TEXT," +
+                    BeerContract.BeerEntry.COLUMN_NAME_DEFENDANT + " TEXT," +
+                    BeerContract.BeerEntry.COLUMN_NAME_DEFENDANT_ID + " INTEGER," +
+                    BeerContract.BeerEntry.COLUMN_NAME_PROSECUTORS + " TEXT," +
+                    BeerContract.BeerEntry.COLUMN_NAME_DESCRIPTION + " TEXT," +
+                    BeerContract.BeerEntry.COLUMN_NAME_COUNT + " INTEGER)";
 
     private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + RulerContract.RulerEntry.TABLE_NAME;
+            "DROP TABLE IF EXISTS " + BeerContract.BeerEntry.TABLE_NAME;
 
-    public RulerDBHelper(Context context) {
+    public BeerDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
     }
@@ -49,24 +52,26 @@ public class RulerDBHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    public List<Ruler> getListOfRulers() {
+    public List<Beer> getListOfBeers() {
         SQLiteDatabase db = this.getReadableDatabase();
 
         // Define a projection that specifies which columns from the database
         // you will actually use after this query.
         String[] projection = {
                 BaseColumns._ID,
-                RulerContract.RulerEntry.COLUMN_NAME_VASALL_ID,
-                RulerContract.RulerEntry.COLUMN_NAME_SINCE,
-                RulerContract.RulerEntry.COLUMN_NAME_RANK
+                BeerContract.BeerEntry.COLUMN_NAME_DATE,
+                BeerContract.BeerEntry.COLUMN_NAME_DEFENDANT,
+                BeerContract.BeerEntry.COLUMN_NAME_PROSECUTORS,
+                BeerContract.BeerEntry.COLUMN_NAME_DESCRIPTION,
+                BeerContract.BeerEntry.COLUMN_NAME_COUNT
         };
 
         // How you want the results sorted in the resulting Cursor
         String sortOrder =
-                RulerContract.RulerEntry.COLUMN_NAME_SINCE + " ASC";
+                BeerContract.BeerEntry.COLUMN_NAME_DATE + " ASC";
 
         Cursor cursor = db.query(
-                RulerContract.RulerEntry.TABLE_NAME,   // The table to query
+                BeerContract.BeerEntry.TABLE_NAME,   // The table to query
                 projection,             // The array of columns to return (pass null to get all)
                 null,              // The columns for the WHERE clause
                 null,          // The values for the WHERE clause
@@ -75,35 +80,28 @@ public class RulerDBHelper extends SQLiteOpenHelper {
                 sortOrder               // The sort order
         );
 
-        VasallsDBHelper dbVasall = new VasallsDBHelper(context);
+        BeerDBHelper dbBeer = new BeerDBHelper(context);
 
-        List<Ruler> listOfRulers = new ArrayList<Ruler>();
+        List<Beer> listOfBeers = new ArrayList<Beer>();
         while (cursor.moveToNext()) {
-            Ruler r = new Ruler();
-            Vasall v = dbVasall.getVasallById((cursor.getLong(cursor.getColumnIndexOrThrow(RulerContract.RulerEntry.COLUMN_NAME_VASALL_ID))));
-            if (v != null)
-            {
-                r.name = v.getName();
-                r.vasallId = v.getId();
-            }
-            else
-            {
-                r.name = "?";
-            }
+            Beer b = new Beer();
 
-            r.rank = cursor.getString(cursor.getColumnIndexOrThrow(RulerContract.RulerEntry.COLUMN_NAME_RANK));
+            b.setDefendant(cursor.getString(cursor.getColumnIndexOrThrow(BeerContract.BeerEntry.COLUMN_NAME_DEFENDANT)));
+            b.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(BeerContract.BeerEntry.COLUMN_NAME_DESCRIPTION)));
+            b.setProsecutors(cursor.getString(cursor.getColumnIndexOrThrow(BeerContract.BeerEntry.COLUMN_NAME_PROSECUTORS)));
+            b.setCount(cursor.getInt(cursor.getColumnIndexOrThrow(BeerContract.BeerEntry.COLUMN_NAME_COUNT)));
 
             @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             try {
-                r.startDate = sdf.parse(cursor.getString(cursor.getColumnIndexOrThrow(RulerContract.RulerEntry.COLUMN_NAME_SINCE)));
+                b.setDate(sdf.parse(cursor.getString(cursor.getColumnIndexOrThrow(BeerContract.BeerEntry.COLUMN_NAME_DATE))));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            listOfRulers.add(r);
+            listOfBeers.add(b);
         }
         cursor.close();
         db.close();
-        return listOfRulers;
+        return listOfBeers;
     }
 
 }

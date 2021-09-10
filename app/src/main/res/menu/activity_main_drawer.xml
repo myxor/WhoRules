@@ -24,12 +24,10 @@
             android:icon="@drawable/ic_menu_timer"
             android:title="@string/timer" />
 
-
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/configure"
-            android:visible="false" />
+            android:id="@+id/nav_beers"
+            android:icon="@android:drawable/btn_default"
+            android:title="@string/beers" />
 
 
     </group>

@@ -22,9 +22,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings" />
-        <activity
             android:name=".AboutActivity"
             android:label="@string/title_activity_about" />
         <activity
@@ -36,6 +33,10 @@
         <activity
             android:name=".RanksListActivity"
             android:label="@string/title_ranks"/>
+
+        <activity
+            android:name=".BeersListActivity"
+            android:label="@string/beers"/>
 
     </application>
 
