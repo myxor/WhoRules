@@ -133,12 +133,20 @@ public class MainActivity extends AppCompatActivity
 
         initRulerList();
 
+        updatMainMenu();
+    }
 
-        // Update main menu:
+    public void updatMainMenu() {
+        NavigationView navigationView = findViewById(R.id.nav_view);
         Menu menu = navigationView.getMenu();
         MenuItem navVasalls = menu.findItem(R.id.nav_people);
         if (navVasalls != null) {
-            navVasalls.setTitle(R.string.pref_header_people + " (" + MainActivity.vasallList.size() + ")");
+            navVasalls.setTitle(String.format(getString(R.string.pref_header_people) + " (%d)", MainActivity.vasallList.size()));
+        }
+        MenuItem navBeers = menu.findItem(R.id.nav_beers);
+        if (navBeers != null) {
+            int beerCount = new BeerDBHelper(MainActivity.this).getNumberOfTotalBeers();
+            navBeers.setTitle(String.format(getString(R.string.beers) + " (%d)", beerCount));
         }
     }
 
@@ -153,13 +161,7 @@ public class MainActivity extends AppCompatActivity
             fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.green)));
         }
 
-        // Update main menu:
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        Menu menu = navigationView.getMenu();
-        MenuItem navVasalls = menu.findItem(R.id.nav_people);
-        if (navVasalls != null) {
-            navVasalls.setTitle(getString(R.string.pref_header_people) + " (" + MainActivity.vasallList.size() + ")");
-        }
+        updatMainMenu();
     }
 
     @Override

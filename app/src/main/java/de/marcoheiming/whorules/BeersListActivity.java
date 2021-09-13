@@ -54,7 +54,6 @@ public class BeersListActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_beers_add);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,15 +82,16 @@ public class BeersListActivity extends AppCompatActivity {
                 layout.addView(countText);
 
                 new AlertDialog.Builder(BeersListActivity.this)
-                        .setTitle("Strafbier hinzufügen")
-                        .setMessage("Bitte gebe den Ankläger, Angeklagten, Grund und Anzahl der Strafbiere ein:")
+                        .setTitle(R.string.add_beer)
+                        .setMessage(R.string.add_beer_text)
                         .setIcon(android.R.drawable.ic_menu_add)
                         .setView(layout)
-                        .setPositiveButton("Hinzufügen", new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                new Beer(getApplicationContext(), defendantText.getText().toString(), prosecutorsText.getText().toString(),
+                                Beer b = new Beer(getApplicationContext(), defendantText.getText().toString(), prosecutorsText.getText().toString(),
                                         descriptionText.getText().toString(), Integer.parseInt(countText.getText().toString()));
-                                mAdapter.notifyDataSetChanged();
+                                beersList.add(b);
+                                mAdapter.notifyItemInserted(beersList.size());
                             }
                         }).show();
             }

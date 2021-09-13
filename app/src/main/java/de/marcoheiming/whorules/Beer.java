@@ -34,7 +34,9 @@ public class Beer {
     }
 
     public Beer(Context context) {
+
         this.context = context;
+        this.dbHelper = new BeerDBHelper(this.context);
     }
 
     public Beer(Context context, String defendant, String prosecutors, String description, int count) {
@@ -46,8 +48,6 @@ public class Beer {
         this.count = count;
 
         this.dbHelper = new BeerDBHelper(this.context);
-
-        // TODO create in DB
 
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date = sdf.format(Calendar.getInstance().getTime());
@@ -68,6 +68,27 @@ public class Beer {
         values.put(BeerContract.BeerEntry.COLUMN_NAME_COUNT, count);
 
         this._id = db.insert(BeerContract.BeerEntry.TABLE_NAME, null, values);
+    }
+
+    public boolean delete(Context context, long id) {
+        dbHelper = new BeerDBHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        return db.delete(BeerContract.BeerEntry.TABLE_NAME, "_id = ?", new String[]{String.valueOf(id)}) > 0;
+    }
+
+    public void updateBeerInDB(Context context, Beer b) {
+        dbHelper = new BeerDBHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        //values.put(BeerContract.BeerEntry.COLUMN_NAME_DATE, date);  // TODO
+        values.put(BeerContract.BeerEntry.COLUMN_NAME_DEFENDANT, b.getDefendant());
+        values.put(BeerContract.BeerEntry.COLUMN_NAME_DEFENDANT_ID, b.getDefendant_id());
+        values.put(BeerContract.BeerEntry.COLUMN_NAME_DESCRIPTION, b.getDescription());
+        values.put(BeerContract.BeerEntry.COLUMN_NAME_PROSECUTORS, b.getProsecutors());
+        values.put(BeerContract.BeerEntry.COLUMN_NAME_COUNT, b.getCount());
+
+        db.update(BeerContract.BeerEntry.TABLE_NAME, values, "_id = ?", new String[]{String.valueOf(b.getId())});
     }
 
     public long getId() {

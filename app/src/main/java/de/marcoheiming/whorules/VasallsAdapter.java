@@ -119,11 +119,11 @@ public class VasallsAdapter extends RecyclerView.Adapter<VasallsAdapter.VasallVi
                                 layout.addView(norText);
 
                                 new AlertDialog.Builder(context)
-                                        .setTitle("Vasalle bearbeiten")
-                                        .setMessage("Bitte gebe den Namen, Rang und Anzahl der Regentschaften des Vasallen " + vasall.getName() + " ein:")
+                                        .setTitle(R.string.vasall_modify)
+                                        .setMessage(String.format(context.getString(R.string.vasall_modify_text), vasall.getName()))
                                         .setIcon(android.R.drawable.ic_menu_add)
                                         .setView(layout)
-                                        .setPositiveButton("Speichern", new DialogInterface.OnClickListener() {
+                                        .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int whichButton) {
                                                 vasall.setName(nameText.getText().toString());
                                                 vasall.setRank(rankSpinner.getSelectedItem().toString());

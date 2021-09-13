@@ -224,18 +224,15 @@ public class Vasall {
     }
 
     public boolean delete() {
-        if (dbHelper != null) {
-            SQLiteDatabase db = dbHelper.getWritableDatabase();
+        dbHelper = new VasallsDBHelper(this.context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        new RankDBHelper(this.context).updateNumberOfVasallsHoldingTheRankForRank(this.rankId);
 
-            new RankDBHelper(this.context).updateNumberOfVasallsHoldingTheRankForRank(this.rankId);
-
-            if (_id > 0) {
-                return db.delete(VasallsContract.VasallEntry.TABLE_NAME, "_id = ?", new String[]{String.valueOf(_id)}) > 0;
-            } else {
-                return db.delete(VasallsContract.VasallEntry.TABLE_NAME, VasallsContract.VasallEntry.COLUMN_NAME_NAME + " = ?", new String[]{name}) > 0;
-            }
+        if (_id > 0) {
+            return db.delete(VasallsContract.VasallEntry.TABLE_NAME, "_id = ?", new String[]{String.valueOf(_id)}) > 0;
+        } else {
+            return db.delete(VasallsContract.VasallEntry.TABLE_NAME, VasallsContract.VasallEntry.COLUMN_NAME_NAME + " = ?", new String[]{name}) > 0;
         }
-        return false;
     }
 
 }

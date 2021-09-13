@@ -28,9 +28,21 @@ android:paddingRight="@dimen/activity_horizontal_margin">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
+                android:layout_marginEnd="40dp"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewOptions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="10dp"
+                android:text="&#8942;"
+                android:textAppearance="?android:textAppearanceLarge" />
 
             <TextView
                 android:id="@+id/beer_list_defendant"
@@ -38,6 +50,7 @@ android:paddingRight="@dimen/activity_horizontal_margin">
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="28dp"
+                android:layout_marginEnd="40dp"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -48,6 +61,7 @@ android:paddingRight="@dimen/activity_horizontal_margin">
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="56dp"
+                android:layout_marginEnd="0dp"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp" />
 

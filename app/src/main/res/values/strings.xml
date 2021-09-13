@@ -108,5 +108,15 @@
     <string name="description">Grund</string>
     <string name="defendant">Angeklagter</string>
     <string name="numberOfBeers">Anzahl Biere</string>
+    <string name="edit">Bearbeiten</string>
+    <string name="delete">Löschen</string>
+    <string name="add">Hinzufügen</string>
+    <string name="add_beer">Strafbier hinzufügen</string>
+    <string name="add_beer_text">Bitte gebe den Ankläger, Angeklagten, Grund und Anzahl der Strafbiere ein:</string>
+    <string name="beer_modify">Bier bearbeiten</string>
+    <string name="beer_modify_text">Bitte gebe den Ankläger, Angeklagten, Grund und Anzahl der Strafbiere ein:</string>
+    <string name="save">Speichern</string>
+    <string name="vasall_modify">Vasalle bearbeiten</string>
+    <string name="vasall_modify_text">Bitte gebe den Namen, Rang und Anzahl der Regentschaften des Vasallen %s ein:</string>
 
 </resources>

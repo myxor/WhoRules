@@ -29,7 +29,7 @@ public class BeersAdapter extends RecyclerView.Adapter<BeersAdapter.BeerViewHold
     private Context context;
 
     public class BeerViewHolder extends RecyclerView.ViewHolder {
-        public TextView defendant, prosecutors, description, date, count;
+        public TextView defendant, prosecutors, description, date, count, buttonViewOption;
 
         public BeerViewHolder(View view) {
             super(view);
@@ -38,6 +38,7 @@ public class BeersAdapter extends RecyclerView.Adapter<BeersAdapter.BeerViewHold
             description = (TextView) view.findViewById(R.id.beer_list_description);
             date = (TextView) view.findViewById(R.id.beer_list_date);
             count = (TextView) view.findViewById(R.id.beer_list_count);
+            buttonViewOption = (TextView) view.findViewById(R.id.textViewOptions);
         }
     }
 
@@ -73,6 +74,81 @@ public class BeersAdapter extends RecyclerView.Adapter<BeersAdapter.BeerViewHold
         }
         holder.date.setText(date);
         holder.count.setText(String.format("%s: %s", this.context.getString(R.string.count), String.valueOf(beer.getCount())));
+
+        holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popup = new PopupMenu(context, holder.buttonViewOption);
+                popup.inflate(R.menu.beer_list_row_menu);
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.menu_edit:
+
+                                LinearLayout layout = new LinearLayout(context);
+                                layout.setOrientation(LinearLayout.VERTICAL);
+
+                                final EditText prosecutorsText = new EditText(context);
+                                prosecutorsText.setHint(context.getString(R.string.prosecutors));
+                                prosecutorsText.setText(beer.getProsecutors());
+                                layout.addView(prosecutorsText);
+
+                                final EditText defendantText = new EditText(context);
+                                defendantText.setHint(context.getString(R.string.defendant));
+                                defendantText.setText(beer.getDefendant());
+                                layout.addView(defendantText);
+
+                                final EditText descriptionText = new EditText(context);
+                                descriptionText.setHint(context.getString(R.string.description));
+                                descriptionText.setText(beer.getDescription());
+                                layout.addView(descriptionText);
+
+                                final EditText countText = new EditText(context);
+                                countText.setHint(context.getString(R.string.numberOfBeers));
+                                countText.setText("1");
+                                countText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                                countText.setText(String.valueOf(beer.getCount()));
+                                layout.addView(countText);
+
+                                new AlertDialog.Builder(context)
+                                        .setTitle(R.string.beer_modify)
+                                        .setMessage(R.string.beer_modify_text)
+                                        .setIcon(android.R.drawable.ic_menu_add)
+                                        .setView(layout)
+                                        .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+                                                beer.setProsecutors(prosecutorsText.getText().toString());
+                                                beer.setDescription(descriptionText.getText().toString());
+                                                beer.setCount(Integer.parseInt(countText.getText().toString()));
+                                                beer.setDefendant(defendantText.getText().toString());
+                                                // beer.setDefendant_id(); // TODO
+                                                // beer.setDate(); // TODO
+
+                                                beer.updateBeerInDB(context, beer);
+
+                                                notifyItemChanged(position);
+                                            }
+                                        }).show();
+                                break;
+                            case R.id.menu_delete:
+
+                                if (beer.delete(context, beer.getId())) {
+                                    beersList.remove(position);
+                                    notifyItemRemoved(position);
+                                }
+
+                                break;
+                        }
+                        return false;
+                    }
+                });
+                //displaying the popup
+                popup.show();
+
+                notifyItemChanged(position);
+            }
+        });
 
     }
 

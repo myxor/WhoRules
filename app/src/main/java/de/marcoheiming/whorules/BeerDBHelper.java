@@ -80,12 +80,11 @@ public class BeerDBHelper extends SQLiteOpenHelper {
                 sortOrder               // The sort order
         );
 
-        BeerDBHelper dbBeer = new BeerDBHelper(context);
-
         List<Beer> listOfBeers = new ArrayList<Beer>();
         while (cursor.moveToNext()) {
             Beer b = new Beer();
 
+            b.setId(cursor.getLong(cursor.getColumnIndexOrThrow(BeerContract.BeerEntry.COLUMN_NAME_ID)));
             b.setDefendant(cursor.getString(cursor.getColumnIndexOrThrow(BeerContract.BeerEntry.COLUMN_NAME_DEFENDANT)));
             b.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(BeerContract.BeerEntry.COLUMN_NAME_DESCRIPTION)));
             b.setProsecutors(cursor.getString(cursor.getColumnIndexOrThrow(BeerContract.BeerEntry.COLUMN_NAME_PROSECUTORS)));
@@ -93,7 +92,10 @@ public class BeerDBHelper extends SQLiteOpenHelper {
 
             @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             try {
-                b.setDate(sdf.parse(cursor.getString(cursor.getColumnIndexOrThrow(BeerContract.BeerEntry.COLUMN_NAME_DATE))));
+                String date = cursor.getString(cursor.getColumnIndexOrThrow(BeerContract.BeerEntry.COLUMN_NAME_DATE));
+                if (date != null && !date.isEmpty()) {
+                    b.setDate(sdf.parse(date));
+                }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -102,6 +104,16 @@ public class BeerDBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return listOfBeers;
+    }
+
+    public int getNumberOfTotalBeers() {
+        int count = 0;
+        List<Beer> beerList = this.getListOfBeers();
+        for (int i = 0; i < beerList.size(); i++) {
+            Beer b = beerList.get(i);
+            count += b.getCount();
+        }
+        return count;
     }
 
 }
