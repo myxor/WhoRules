@@ -52,7 +52,8 @@ The following features are implemented:
 * Manage list of vacation participants
 * Automatic promotion
 * Notification on promotion
-* Drink timer
+* Drinking timers
+* List of punishment beers
 
 
 # Note

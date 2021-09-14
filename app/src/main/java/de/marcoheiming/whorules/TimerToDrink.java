@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-class DrinkTimer {
+class Timer {
 
     private Context context;
 
@@ -23,16 +23,16 @@ class DrinkTimer {
     MediaPlayer mediaPlayer;
     TimerAdapter mAdapter;
 
-    public DrinkTimer() {
+    public Timer() {
     }
 
-    public DrinkTimer(Context context) {
+    public Timer(Context context) {
 
         this.context = context;
 
     }
 
-    public DrinkTimer(Context context, TimerAdapter mAdapter, int seconds) {
+    public Timer(Context context, TimerAdapter mAdapter, int seconds) {
         this.context = context;
         this.secondsRemaining = seconds;
         this.mAdapter = mAdapter;
@@ -40,7 +40,7 @@ class DrinkTimer {
         createCountdown();
     }
 
-    public DrinkTimer(Context context, TimerAdapter mAdapter, Vasall vasall, int seconds) {
+    public Timer(Context context, TimerAdapter mAdapter, Vasall vasall, int seconds) {
 
         this.context = context;
         this.vasall = vasall;
@@ -53,8 +53,7 @@ class DrinkTimer {
 
     private void createCountdown()
     {
-
-        cTimer = new CountDownTimer(this.secondsRemaining * 1000, 100) {
+        cTimer = new CountDownTimer(this.secondsRemaining * 1000L, 100) {
 
             public void onTick(long millisUntilFinished) {
                 long minutesUntilFinished = 0;
@@ -64,12 +63,15 @@ class DrinkTimer {
                     secondsUntilFinished = secondsUntilFinished % 60;
                 }
 
+                /*
+                TODO countdown
                 if (millisUntilFinished % 1000 == 0 &&
                         secondsUntilFinished <= 10 && secondsUntilFinished > 0) {
 
                     // FIXME: not working?
                     //mediaPlayer.start();
                 }
+                */
 
                 long deciSeconds = Math.round((millisUntilFinished % 1000) / 100);
                 if (minutesUntilFinished > 0) {
@@ -80,18 +82,16 @@ class DrinkTimer {
                 }
 
                 mAdapter.notifyDataSetChanged();
-
-
             }
 
             public void onFinish() {
-                remainingText = ("TRINK!");
+                remainingText = context.getString(R.string.timer_drink);
 
                 mediaPlayer = MediaPlayer.create(context, R.raw.alarm_clock);
                 mediaPlayer.start();
 
 
-                new Timer().schedule(new TimerTask() {
+                new java.util.Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {
                         if (mediaPlayer != null) {
