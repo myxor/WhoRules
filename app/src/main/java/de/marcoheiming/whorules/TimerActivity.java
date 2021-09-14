@@ -13,24 +13,19 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import android.text.InputType;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import java.util.ArrayList;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import java.util.List;
 
 public class TimerActivity extends AppCompatActivity {
 
     CountDownTimer cTimer = null;
-    Button startBtn;
-
-    ArrayList<DrinkTimer> activeTimers = new ArrayList<>();
+    FloatingActionButton startBtn;
 
     MediaPlayer mediaPlayer;
 
@@ -50,20 +45,18 @@ public class TimerActivity extends AppCompatActivity {
             //ab.setDisplayShowHomeEnabled(true);
         }
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_timer_list);
+        RecyclerView recyclerView = findViewById(R.id.rv_timer_list);
 
-        mAdapter = new TimerAdapter(activeTimers, TimerActivity.this);
+        if (mAdapter == null) {
+            mAdapter = new TimerAdapter(MainActivity.activeTimerToDrinks, TimerActivity.this);
+        }
+
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        SwipeController swipeController = new SwipeController();
-        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
-        itemTouchhelper.attachToRecyclerView(recyclerView);
-
-
-        startBtn = findViewById(R.id.timer_start_btn);
+        startBtn = findViewById(R.id.fab_timer_add);
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,21 +64,20 @@ public class TimerActivity extends AppCompatActivity {
                 LinearLayout layout = new LinearLayout(context);
                 layout.setOrientation(LinearLayout.VERTICAL);
 
-                final EditText minutesText = new EditText(context);
-                minutesText.setHint("Minuten");
-                minutesText.setText("10");
-                minutesText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                layout.addView(minutesText);
+                final EditText secondsText = new EditText(context);
+                secondsText.setHint(R.string.seconds);
+                secondsText.setText("90");
+                secondsText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                layout.addView(secondsText);
 
                 new AlertDialog.Builder(TimerActivity.this)
-                        .setTitle("Timer eingeben")
-                        .setMessage("Bitte gebe die Dauer in Minuten ein:")
+                        .setTitle(R.string.timerToDrink)
+                        .setMessage(R.string.timer_add_text)
                         .setIcon(android.R.drawable.ic_menu_add)
                         .setView(layout)
-                        .setPositiveButton("Go", new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.start, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                startTimer(Integer.parseInt(minutesText.getText().toString()) * 60);
-
+                                startTimer(Integer.parseInt(secondsText.getText().toString()));
                             }
                         }).show();
             }
@@ -93,27 +85,38 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+    public void onResume() {
+        super.onResume();
+
+        List<TimerToDrink> timerList = mAdapter.getTimerToDrinkList();
+        for (int i = 0; i < timerList.size(); i++) {
+            TimerToDrink timer = timerList.get(i);
+        }
+        if (timerList.size() > 0) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        } else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
     void startTimer(int seconds) {
-
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        DrinkTimer timer = new DrinkTimer(TimerActivity.this, mAdapter, seconds);
-        activeTimers.add(timer);
-
+        TimerToDrink timerToDrink = new TimerToDrink(TimerActivity.this, mAdapter, seconds);
+        MainActivity.activeTimerToDrinks.add(timerToDrink);
         mediaPlayer = MediaPlayer.create(TimerActivity.this, R.raw.beep_short);
-
         mAdapter.notifyDataSetChanged();
-
     }
 
 

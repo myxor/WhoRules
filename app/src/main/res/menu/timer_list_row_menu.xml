@@ -4,5 +4,5 @@
     android:layout_width="10dp">
     <item
         android:id="@+id/menu_delete"
-        android:title="Löschen" />
+        android:title="@string/delete" />
 </menu>

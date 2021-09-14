@@ -25,8 +25,6 @@ import java.util.List;
 
 public class VasallsListActivity extends AppCompatActivity {
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +64,7 @@ public class VasallsListActivity extends AppCompatActivity {
                 layout.setOrientation(LinearLayout.VERTICAL);
 
                 final EditText nameText = new EditText(context);
-                nameText.setHint("Name");
+                nameText.setHint(R.string.name);
                 layout.addView(nameText);
 
                 final Spinner rankSpinner = new Spinner(context);
@@ -86,21 +84,20 @@ public class VasallsListActivity extends AppCompatActivity {
                 layout.addView(rankSpinner);
 
                 final EditText norText = new EditText(context);
-                norText.setHint("Anzahl Regentschaften");
+                norText.setHint(R.string.numberOfRegencies);
                 norText.setText("0");
                 norText.setInputType(InputType.TYPE_CLASS_NUMBER);
                 layout.addView(norText);
 
                 new AlertDialog.Builder(VasallsListActivity.this)
-                        .setTitle("Vasalle hinzufügen")
-                        .setMessage("Bitte gebe den Namen, Rang und Anzahl der Regentschaften des neuen Vasallen ein:")
+                        .setTitle(R.string.add_new_vasall)
+                        .setMessage(R.string.vasall_new_text)
                         .setIcon(android.R.drawable.ic_menu_add)
                         .setView(layout)
-                        .setPositiveButton("Hinzufügen", new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 ma.addVasall(getApplicationContext(), nameText.getText().toString(), rankSpinner.getSelectedItem().toString());
-                                mAdapter.notifyDataSetChanged();
-
+                                mAdapter.notifyItemInserted(MainActivity.vasallList.size());
                             }
                         }).show();
             }

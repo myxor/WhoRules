@@ -2,9 +2,11 @@ package de.marcoheiming.whorules;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.DialogInterface;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -18,15 +20,17 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.TimerViewHolder> {
 
-    private List<DrinkTimer> timerList;
+    private List<TimerToDrink> timerToDrinkList;
     private Context context;
+    private TimerViewHolder holder;
 
     public class TimerViewHolder extends RecyclerView.ViewHolder {
-        public TextView remainingText, vasall;
+        public TextView remainingText, vasall, buttonViewOption;
         public ProgressBar progressBar;
 
         public TimerViewHolder(View view) {
@@ -34,17 +38,24 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.TimerViewHol
             remainingText = (TextView) view.findViewById(R.id.timer_remaining_time);
             //vasallList = (TextView) view.findViewById(R.id.timer_vasall_list);
             //progressBar = (ProgressBar) itemView.findViewById(R.id.timer_progress);
+
+            buttonViewOption = (TextView) itemView.findViewById(R.id.textViewOptions);
+            holder = this;
         }
     }
 
 
-    public TimerAdapter(List<DrinkTimer> timerList) {
-        this.timerList = timerList;
+    public TimerAdapter(List<TimerToDrink> timerToDrinkList) {
+        this.timerToDrinkList = timerToDrinkList;
     }
 
-    public TimerAdapter(List<DrinkTimer> timerList, Context context) {
-        this.timerList = timerList;
+    public TimerAdapter(List<TimerToDrink> timerToDrinkList, Context context) {
+        this.timerToDrinkList = timerToDrinkList;
         this.context = context;
+    }
+
+    public List<TimerToDrink> getTimerToDrinkList() {
+        return timerToDrinkList;
     }
 
     @NonNull
@@ -57,31 +68,49 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.TimerViewHol
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final TimerViewHolder holder, final int position) {
-        final DrinkTimer timer = timerList.get(position);
-        holder.remainingText.setText(timer.remainingText);
+    public void onBindViewHolder(@NonNull final TimerViewHolder holder, final int pos) {
+        int position = holder.getAdapterPosition();
+        final TimerToDrink timerToDrink = timerToDrinkList.get(position);
+        holder.remainingText.setText(timerToDrink.remainingText);
         //holder.vasallList.setText(""); // TODO
-
         //holder.progressBar.setProgress(timer); // TODO
 
-
-      /*
-           DrinkTimer timer = timerList.get(position);
-                                timer.cancelTimer();
-
-                                timerList.remove(position);
-                                notifyItemRemoved(position);
-       */
+        holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popup = new PopupMenu(context, holder.buttonViewOption);
+                popup.inflate(R.menu.timer_list_row_menu);
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getItemId() == R.id.menu_delete) {
+                            timerToDrink.cancelTimer();
+                            getTimerToDrinkList().remove(position);
+                            notifyItemRemoved(position);
+                        }
+                        return false;
+                    }
+                });
+                //displaying the popup
+                popup.show();
+                notifyItemChanged(position);
+            }
+        });
     }
 
 
     @Override
     public int getItemCount() {
-        if (timerList == null)
+        if (timerToDrinkList == null)
         {
             return 0;
         }
-        return timerList.size();
+        return timerToDrinkList.size();
+    }
+
+
+    public TimerViewHolder getHolder() {
+        return holder;
     }
 
 

@@ -29,23 +29,27 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <Button
-        android:id="@+id/timer_start_btn"
-        android:layout_width="120dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="60dp"
-        android:background="#3F51B5"
-        android:drawableStart="@drawable/ic_notifications_black_24dp"
-        android:text="@string/start" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_timer_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="60dp" />
 
     </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_timer_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:clickable="true"
+        android:focusable="true"
+        app:backgroundTint="@android:color/holo_green_dark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_add"
+        app:borderWidth="0dp"
+        android:contentDescription="@string/new_timer" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

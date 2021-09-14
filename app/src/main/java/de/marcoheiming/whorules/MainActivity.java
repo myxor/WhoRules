@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity
     ArrayAdapter<String> previousRulersAdapter;
 
     public static List<Vasall> vasallList = new ArrayList<>();
+    public static ArrayList<TimerToDrink> activeTimerToDrinks = new ArrayList<>();
 
     public static List<Rank> rankList = new ArrayList<>();
 
@@ -147,6 +148,10 @@ public class MainActivity extends AppCompatActivity
         if (navBeers != null) {
             int beerCount = new BeerDBHelper(MainActivity.this).getNumberOfTotalBeers();
             navBeers.setTitle(String.format(getString(R.string.beers) + " (%d)", beerCount));
+        }
+        MenuItem navTimer = menu.findItem(R.id.nav_timer);
+        if (navTimer != null) {
+            navTimer.setTitle(String.format(getString(R.string.title_timer) + " (%d)", MainActivity.activeTimerToDrinks.size()));
         }
     }
 

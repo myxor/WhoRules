@@ -91,7 +91,7 @@
     <string name="designate">Regent</string>
     <string name="ranks">Ränge</string>
     <string name="configure">Konfigurieren</string>
-    <string name="timer">Timer</string>
+    <string name="timerToDrink">Timer</string>
     <string name="since">seit</string>
     <string name="title_vasalls_list">Liste der Vasallen</string>
     <string name="title_timer">Timer</string>
@@ -118,5 +118,12 @@
     <string name="save">Speichern</string>
     <string name="vasall_modify">Vasalle bearbeiten</string>
     <string name="vasall_modify_text">Bitte gebe den Namen, Rang und Anzahl der Regentschaften des Vasallen %s ein:</string>
+    <string name="seconds">Sekunden</string>
+    <string name="timer_add_text">Bitte gebe die Dauer in Sekunden ein:</string>
+    <string name="new_timer">Neuer Timer</string>
+    <string name="timer_drink">Trinken!</string>
+    <string name="name">Name</string>
+    <string name="numberOfRegencies">Anzahl Regentschaften</string>
+    <string name="vasall_new_text">Bitte gebe den Namen, Rang und Anzahl der Regentschaften des neuen Vasallen ein:</string>
 
 </resources>
