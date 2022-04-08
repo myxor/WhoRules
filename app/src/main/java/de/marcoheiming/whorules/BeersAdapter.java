@@ -38,7 +38,7 @@ public class BeersAdapter extends RecyclerView.Adapter<BeersAdapter.BeerViewHold
             description = (TextView) view.findViewById(R.id.beer_list_description);
             date = (TextView) view.findViewById(R.id.beer_list_date);
             count = (TextView) view.findViewById(R.id.beer_list_count);
-            buttonViewOption = (TextView) view.findViewById(R.id.textViewOptions);
+            //buttonViewOption = (TextView) view.findViewById(R.id.textViewOptions);
         }
     }
 
@@ -75,6 +75,7 @@ public class BeersAdapter extends RecyclerView.Adapter<BeersAdapter.BeerViewHold
         holder.date.setText(date);
         holder.count.setText(String.format("%s: %s", this.context.getString(R.string.count), String.valueOf(beer.getCount())));
 
+        /*
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -149,6 +150,7 @@ public class BeersAdapter extends RecyclerView.Adapter<BeersAdapter.BeerViewHold
                 notifyItemChanged(position);
             }
         });
+        */
 
     }
 

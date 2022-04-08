@@ -1,19 +1,19 @@
 package de.marcoheiming.whorules;
 
 import android.annotation.SuppressLint;
-import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 public class Beer {
 
@@ -28,6 +28,8 @@ public class Beer {
     private int count;
 
     private BeerDBHelper dbHelper;
+    @SuppressLint("SimpleDateFormat")
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 
     public Beer() {
@@ -49,46 +51,74 @@ public class Beer {
 
         this.dbHelper = new BeerDBHelper(this.context);
 
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String date = sdf.format(Calendar.getInstance().getTime());
-
-        createBeer(date, defendant, 0, prosecutors, description, count); // TODO defendant_id
+        saveToDB();
     }
 
+    /*
+    creates Beer object from JSON
+     */
+    public Beer(Context context, JSONObject json) {
+        this.context = context;
+        try {
+            this.defendant = json.getString("defendant");
+            this.defendant_id = json.getInt("defendant_id");
+            this.prosecutors = json.getString("prosecutors");
+            this.description = json.getString("description");
+            this.date = sdf.parse(json.getString("date"));
+            this.count = json.getInt("count");
 
-    private void createBeer(String date, String defendant, int defendant_id, String prosecutors, String description, int count) {
+            this.dbHelper = new BeerDBHelper(this.context);
+
+            saveToDB();
+        } catch (JSONException | ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public JSONObject toJSON() {
+        JSONObject j = new JSONObject();
+        try {
+            j.put("defendant", this.defendant);
+            j.put("defendant_id", this.defendant_id);
+            j.put("prosecutors", this.prosecutors);
+            j.put("description", this.description);
+            j.put("date", sdf.format(this.defendant));
+            j.put("count", this.count);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return j;
+    }
+
+    public long saveToDB() {
+        return createBeer(this.date, this.defendant, this.defendant_id, this.prosecutors, this.description, this.count);
+    }
+
+    private long createBeer(Date date, String defendant, int defendant_id, String prosecutors, String description, int count) {
+
+        this.defendant = defendant;
+        this.defendant_id = defendant_id;
+        this.prosecutors = prosecutors;
+        this.description = description;
+        this.date = date;
+        this.count = count;
+
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(BeerContract.BeerEntry.COLUMN_NAME_DATE, date);
+        values.put(BeerContract.BeerEntry.COLUMN_NAME_ID, this._id);
+        values.put(BeerContract.BeerEntry.COLUMN_NAME_DATE, sdf.format(date));
         values.put(BeerContract.BeerEntry.COLUMN_NAME_DEFENDANT, defendant);
         values.put(BeerContract.BeerEntry.COLUMN_NAME_DEFENDANT_ID, defendant_id);
         values.put(BeerContract.BeerEntry.COLUMN_NAME_DESCRIPTION, description);
         values.put(BeerContract.BeerEntry.COLUMN_NAME_PROSECUTORS, prosecutors);
         values.put(BeerContract.BeerEntry.COLUMN_NAME_COUNT, count);
 
-        this._id = db.insert(BeerContract.BeerEntry.TABLE_NAME, null, values);
-    }
+        db.insert(BeerContract.BeerEntry.TABLE_NAME, null, values);
 
-    public boolean delete(Context context, long id) {
-        dbHelper = new BeerDBHelper(context);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        return db.delete(BeerContract.BeerEntry.TABLE_NAME, "_id = ?", new String[]{String.valueOf(id)}) > 0;
-    }
-
-    public void updateBeerInDB(Context context, Beer b) {
-        dbHelper = new BeerDBHelper(context);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        //values.put(BeerContract.BeerEntry.COLUMN_NAME_DATE, date);  // TODO
-        values.put(BeerContract.BeerEntry.COLUMN_NAME_DEFENDANT, b.getDefendant());
-        values.put(BeerContract.BeerEntry.COLUMN_NAME_DEFENDANT_ID, b.getDefendant_id());
-        values.put(BeerContract.BeerEntry.COLUMN_NAME_DESCRIPTION, b.getDescription());
-        values.put(BeerContract.BeerEntry.COLUMN_NAME_PROSECUTORS, b.getProsecutors());
-        values.put(BeerContract.BeerEntry.COLUMN_NAME_COUNT, b.getCount());
-
-        db.update(BeerContract.BeerEntry.TABLE_NAME, values, "_id = ?", new String[]{String.valueOf(b.getId())});
+        return this._id;
     }
 
     public long getId() {

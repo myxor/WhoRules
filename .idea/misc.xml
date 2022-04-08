@@ -4,11 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/layout/activity_about.xml" value="0.83625" />
+        <entry key="app/src/main/res/layout/activity_beers_list.xml" value="0.20052083333333334" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.7175" />
         <entry key="app/src/main/res/layout/activity_rank_list.xml" value="0.83625" />
         <entry key="app/src/main/res/layout/activity_timer.xml" value="0.83625" />
         <entry key="app/src/main/res/layout/activity_vasall_list.xml" value="0.83625" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.83625" />
+        <entry key="app/src/main/res/layout/beer_list_row.xml" value="0.20052083333333334" />
         <entry key="app/src/main/res/layout/content_about.xml" value="0.71875" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.71875" />
         <entry key="app/src/main/res/layout/ranks_list_row.xml" value="0.83625" />

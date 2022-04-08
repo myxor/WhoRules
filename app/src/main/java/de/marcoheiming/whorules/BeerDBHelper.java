@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class BeerDBHelper extends SQLiteOpenHelper {
 
@@ -52,7 +53,7 @@ public class BeerDBHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    public List<Beer> getListOfBeers() {
+    private List<Beer> getListOfBeerFromLocalDB() {
         SQLiteDatabase db = this.getReadableDatabase();
 
         // Define a projection that specifies which columns from the database
@@ -80,7 +81,7 @@ public class BeerDBHelper extends SQLiteOpenHelper {
                 sortOrder               // The sort order
         );
 
-        List<Beer> listOfBeers = new ArrayList<Beer>();
+        List<Beer> listOfBeers = new ArrayList<>();
         while (cursor.moveToNext()) {
             Beer b = new Beer();
 
@@ -104,6 +105,34 @@ public class BeerDBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return listOfBeers;
+    }
+
+    public List<Beer> getListOfBeers() {
+
+        BeerAsyncGetRequest getRequest = new BeerAsyncGetRequest(this.context);
+        List<Beer> result = null;
+        try {
+            result = getRequest.execute(0).get();
+
+            if (result != null && result.size() > 0) {
+                SQLiteDatabase db = this.getWritableDatabase();
+                db.execSQL(SQL_DELETE_ENTRIES);
+                onCreate(db);
+                for (Beer b : result) {
+                    b.saveToDB();
+                }
+            }
+
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Fallback: load from local db
+        if (result == null) {
+            result = getListOfBeerFromLocalDB();
+        }
+
+        return result;
     }
 
     public int getNumberOfTotalBeers() {
